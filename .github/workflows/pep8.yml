@@ -15,4 +15,4 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Check PEP8
-      run: docker run --rm -v ./bot:/code eeacms/pep8
+      run: docker run --rm -v ./:/code eeacms/pep8
