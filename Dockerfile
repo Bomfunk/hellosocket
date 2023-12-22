@@ -2,6 +2,8 @@ FROM alpine
 
 WORKDIR /usr/src/app
 
+RUN apk add --no-cache python3
+
 COPY hellosocket.py hellosocket.py
 
-CMD [ "python", "-m", "bot.main" ]
+CMD [ "python", "-u", "hellosocket.py" ]
