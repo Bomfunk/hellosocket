@@ -16,6 +16,7 @@ jobs:
     - name: Build and push the Docker image
       env:
         GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
+        GITHUB_REF: ${{ env.GITHUB_REF }}
       run: |
         REPO_NAME=${{ github.repository }}
         REPO_LOWERCASE=$(echo "$REPO_NAME" | tr '[:upper:]' '[:lower:]')
