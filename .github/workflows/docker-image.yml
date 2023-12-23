@@ -14,18 +14,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Extract repository name
-      run: |
-        REPO_NAME=${{ github.repository }}
-        REPO_LOWERCASE=$(echo "$REPO_NAME" | tr '[:upper:]' '[:lower:]')
-      shell: bash
     - name: Build and push the Docker image
       env:
         GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
       run: |
+        REPO_NAME=${{ github.repository }}
+        REPO_LOWERCASE=$(echo "$REPO_NAME" | tr '[:upper:]' '[:lower:]')
         DATE=$(date +%s)
         docker build . --file Dockerfile --tag ghcr.io/$REPO_LOWERCASE:$DATE
         echo $GHCR_TOKEN | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
         echo docker push ghcr.io/$REPO_LOWERCASE:$DATE
         docker push ghcr.io/$REPO_LOWERCASE:$DATE
-      shell: bash
