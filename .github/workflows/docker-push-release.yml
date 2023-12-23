@@ -1,10 +1,10 @@
-name: Docker Image CI
+name: Docker Image Release CI
 
 on:
   push:
-    branches: [ "main", "development" ]
-  pull_request:
-    branches: [ "main", "development" ]
+    tags:
+      - 'v*.*.*'
+    branches: [ "main" ]
 
 jobs:
 
@@ -22,6 +22,7 @@ jobs:
         REPO_LOWERCASE=$(echo "$REPO_NAME" | tr '[:upper:]' '[:lower:]')
         DATE=$(date +%s)
         docker build . --file Dockerfile --tag ghcr.io/$REPO_LOWERCASE:$DATE
+        docker tag ghcr.io/$REPO_LOWERCASE:$DATE ghcr.io/$REPO_LOWERCASE:latest
         echo $GHCR_TOKEN | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
-        echo docker push ghcr.io/$REPO_LOWERCASE:$DATE
         docker push ghcr.io/$REPO_LOWERCASE:$DATE
+        docker push ghcr.io/$REPO_LOWERCASE:latest
