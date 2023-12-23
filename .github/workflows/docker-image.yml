@@ -21,4 +21,5 @@ jobs:
         GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
       run: |
         echo $GHCR_TOKEN | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
+        echo docker push ghcr.io/${{ github.repository }}:latest
         docker push ghcr.io/${{ github.repository }}:latest
