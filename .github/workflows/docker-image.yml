@@ -16,10 +16,14 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag hellosocket:$(date +%s)
+    - name: Extract repository name
+      run: |
+        REPO_NAME=${{ github.repository }}
+        REPO_LOWERCASE=$(echo "$REPO_NAME" | tr '[:upper:]' '[:lower:]')
     - name: Push the Docker image
       env:
         GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
       run: |
         echo $GHCR_TOKEN | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
         echo docker push ghcr.io/${{ github.repository }}:latest
-        docker push ghcr.io/${{ github.repository }}:latest
+        docker push ghcr.io/$REPO_LOWERCASE:latest
