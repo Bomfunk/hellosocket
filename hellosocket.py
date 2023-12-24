@@ -15,7 +15,7 @@ def start_server(port):
         print(f"Connection from {client_address}")
 
         message = datetime.datetime.now().\
-            strftime("Hello world! v1.3.0 %Y-%m-%d %H:%M:%S\n")
+            strftime("Hello world! v1.4.0 %Y-%m-%d %H:%M:%S\n")
         client_socket.send(message.encode("utf-8"))
 
         client_socket.close()
