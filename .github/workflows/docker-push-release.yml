@@ -26,3 +26,18 @@ jobs:
         echo $GHCR_TOKEN | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
         docker push ghcr.io/$REPO_LOWERCASE:$RELEASE_VERSION
         docker push ghcr.io/$REPO_LOWERCASE:latest
+
+  update-deployment:
+
+    needs: build
+    runs-on: bitnami/kubectl
+
+    steps:
+    - name: Connect to k8s cluster and update deployment image
+      env:
+        KUBECONFIG_FULL: ${{ secrets.KUBECONFIG_FULL }}
+      run: |
+        mkdir .kube
+        echo "$KUBECONFIG_FULL" >> .kube/config
+        echo "$GITHUB_REF"
+        kubectl set image deployment/hellosocket-deployment hellosocket=ghcr.io/bomfunk/hellosocket:latest
