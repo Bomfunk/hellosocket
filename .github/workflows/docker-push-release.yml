@@ -30,14 +30,16 @@ jobs:
   update-deployment:
 
     needs: build
-    runs-on: bitnami/kubectl
+    runs-on: ubuntu-latest
 
     steps:
     - name: Connect to k8s cluster and update deployment image
       env:
         KUBECONFIG_FULL: ${{ secrets.KUBECONFIG_FULL }}
+        GITHUB_REF: ${{ env.GITHUB_REF }}
       run: |
         mkdir .kube
         echo "$KUBECONFIG_FULL" >> .kube/config
-        echo "$GITHUB_REF"
-        kubectl set image deployment/hellosocket-deployment hellosocket=ghcr.io/bomfunk/hellosocket:latest
+        head .kube/config
+        RELEASE_VERSION=${GITHUB_REF#refs/*/}
+        kubectl set image deployment/hellosocket-deployment hellosocket=ghcr.io/bomfunk/hellosocket:$RELEASE_VERSION
