@@ -1,0 +1,23 @@
+name: Update k8s deployment
+
+on:
+  workflow_run:
+    workflows: ["Docker Image Release CI"]
+    types:
+      - completed
+
+jobs:
+
+  build:
+
+    runs-on: bitname/kubectl
+
+    steps:
+    - name: Connect to k8s cluster and update deployment image
+      env:
+        KUBECONFIG_FULL: ${{ secrets.KUBECONFIG_FULL }}
+      run: |
+        mkdir .kube
+        echo "$KUBECONFIG_FULL" >> .kube/config
+        echo "$GITHUB_REF"
+        kubectl set image deployment/hellosocket-deployment hellosocket=ghcr.io/bomfunk/hellosocket:latest
