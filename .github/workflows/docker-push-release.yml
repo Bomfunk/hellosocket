@@ -30,7 +30,7 @@ jobs:
   update-deployment:
 
     needs: build
-    runs-on: bitnami/kubectl
+    runs-on: ubuntu-latest
 
     steps:
     - name: Connect to k8s cluster and update deployment image
