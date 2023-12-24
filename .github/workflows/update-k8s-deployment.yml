@@ -13,6 +13,7 @@ jobs:
     runs-on: bitname/kubectl
 
     steps:
+    - uses: actions/checkout@v3
     - name: Connect to k8s cluster and update deployment image
       env:
         KUBECONFIG_FULL: ${{ secrets.KUBECONFIG_FULL }}
